@@ -1,0 +1,338 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto Mono', monospace; */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 1000px;
+  height: calc(100vh - 60px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.messages {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 100%;
+}
+
+.messages__header,
+.messages__footer {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+
+.messages__footer {
+  align-items: flex-end;
+}
+
+.messages__window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, #ffe8b3, #ffd9ea, #ffe8b3);
+  overflow-y: auto;
+}
+
+.message_body audio,
+.message_body video,
+.message_body img {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.message_body p {
+  white-space: pre-line;
+}
+
+.message_footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 25px;
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+
+.no-messages {
+  align-self: center;
+  justify-self: center;
+}
+
+.downliad-link,
+.pin-button,
+.favourite-button {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.downliad-link {
+  background-image: url('/src/icons/download.png');
+}
+
+.downliad-link.checked {
+  background-image: url('/src/icons/download.png');
+}
+
+.pin-button {
+  background-image: url('/src/icons/pin-unchecked.png');
+}
+
+.pin-button.checked {
+  background-image: url('/src/icons/pin-checked.png');
+}
+
+.favourite-button {
+  background-image: url('/src/icons/star-unchecked.png');
+}
+
+.favourite-button.checked {
+  background-image: url('/src/icons/star-checked.png');
+}
+
+.drop-files {
+  position: absolute;
+  bottom: 50px;
+  height: 150px;
+  right: 10px;
+  left: 10px;
+}
+
+.drop-files__input,
+.drop-files__overlay,
+.drop-files__send,
+.drop-files__delete {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.drop-files__overlay,
+.drop-files__send,
+.drop-files__delete {
+  text-transform: uppercase;
+  color: #b18094;
+  font-size: 2em;
+  border-radius: 10px;
+  background-color: #fff8e8;
+}
+
+.drop-files__overlay::before,
+.drop-files__send::before,
+.drop-files__delete::before {
+  position: absolute;
+  content: '';
+  width: calc(100% - 15px);
+  height: calc(100% - 15px);
+  border: 5px #ffd9ea dotted;
+  border-radius: 10px;
+}
+
+.drop-files__overlay:active::before,
+.drop-files__send:active::before,
+.drop-files__delete:active::before {
+  border-color: #b18094;
+}
+
+.drop-files__overlay.active::before {
+  border-color: #b18094;
+}
+
+.drop-files__send,
+.drop-files__delete {
+  width: 50%;
+}
+
+.drop-files__delete {
+  right: 0;
+}
+
+.messages__footer__add-file-button,
+.messages__header__search-button {
+  height: 40px;
+  width: 40px;;
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.messages__footer__add-file-button {
+  background-image: url('/src/icons/add.png');
+}
+
+.messages__header__search-button {
+  background-image: url('/src/icons/search.png');
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  background-color: white;
+}
+
+.user-message {
+  align-self: flex-end;
+  text-align: end;
+  background-color: #fff5f9;
+}
+
+.user-message .message_body p {
+  text-align: start;
+}
+
+.pre-code {
+  text-align: left;
+  background-color: rgba(211, 211, 211, 0.3);
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
+  font-size: 13px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.messages__footer__input,
+.messages__header__input {
+  height: 40px;
+  width: 100%;
+  padding: 5px 10px;
+  font-family: inherit;
+  border: none;
+  resize: none;
+}
+
+.messages__footer__input:focus,
+.messages__header__input:focus {
+  outline: none;
+}
+
+.messages__footer__input::placeholder {
+  line-height: 30px;
+}
+
+.pinned-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 0 15px;
+}
+
+.pinned-message__value {
+  font-size: 0.8em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30%;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.features li {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 5px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  padding: 20px 30px;
+  background-color: #fff;
+  border: 1px solid #74495b;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-form__input {
+  font-family: inherit;
+  margin-bottom: 20px;
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.login-error {
+  margin-bottom: 5px;
+  color: red;
+}
+
+.lost-connection__info {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.button {
+  padding: 10px 20px;
+  color: #74495b;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-family: inherit;
+  background-color: #ffd9ea;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 0.2rem #ffd9ea77;
+}
+
+.hidden {
+  display: none;
+}
+
+.icon {
+  filter: invert(32%) sepia(10%) saturate(1596%) hue-rotate(283deg) brightness(92%) contrast(88%);
+  margin-right: 5px;
+  cursor: pointer;
+}
