@@ -240,14 +240,14 @@ export default class Organizer {
 
   searchRequest(event) {
     if (event.key === 'Enter' || event.target === this.searchButton) {
-      if (this.searchInput.value.length < 3) {
+      if (this.searchInput.value.trim().length < 3) {
         return;
       }
       this.sendRequest({
         action: 'search',
         data: {
           user: this.user,
-          value: this.searchInput.value.trim(),
+          phrase: this.searchInput.value.trim(),
         },
       });
     }
@@ -483,7 +483,6 @@ export default class Organizer {
   }
 
   showFounded(messages) {
-    console.log(messages);
     do {
       this.chatBlock.children.forEach((message) => message.remove());
     } while (this.chatBlock.children.length !== 0);
@@ -579,7 +578,6 @@ export default class Organizer {
   }
 
   renderMessages(messages) {
-    console.log(messages);
     if (messages.length === 0) {
       return;
     }
@@ -616,7 +614,6 @@ export default class Organizer {
     const droparea = document.querySelector('.drop-files');
 
     if (droparea) {
-      // this.file = null;
       this.dropAreaOverlay.removeEventListener('click', this.addFile);
       this.dropAreaInput.removeEventListener('change', this.addfileInputChange);
       this.dropAreaSendBtn.removeEventListener('click', this.fileRequest);
