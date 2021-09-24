@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable default-case */
 /* eslint-disable no-plusplus */
@@ -42,6 +43,7 @@ export default class Organizer {
     this.videos = [];
     this.files = [];
     this.favourites = [];
+    this.founded = null;
     this.pinnedMessage = null;
     this.isPinnedMessageShowed = false;
     this.activeFeatures = 'features__messages';
@@ -132,7 +134,8 @@ export default class Organizer {
         }
       } else if (response.action === 'search') {
         if (response.status) {
-          this.showFounded(response.message);
+          this.founded = response.message;
+          this.showFounded(this.founded);
         }
       } else if (response.action === 'close') {
         console.log(response);
@@ -243,6 +246,7 @@ export default class Organizer {
       if (this.searchInput.value.trim().length < 3) {
         return;
       }
+      this.founded = null;
       this.sendRequest({
         action: 'search',
         data: {
@@ -379,24 +383,12 @@ export default class Organizer {
 
   countMessages(messages) {
     messages.forEach((message) => {
-      for (let i = 0; i < message.types.length; i++) {
-        // FIXME switch
-        switch (message.types[i]) {
-          case 'image':
-            this.images.push(message);
-            break;
-          case 'audio':
-            this.audios.push(message);
-            break;
-          case 'video':
-            this.videos.push(message);
-            break;
-          case 'file':
-            this.files.push(message);
-            break;
-          case 'link':
-            this.links.push(message);
-            break;
+      if (!message.isBot) {
+        for (let i = 0; i < message.types.length; i++) {
+          const type = `${message.types[i]}s`;
+          if (type !== 'texts') {
+            this[type].push(message);
+          }
         }
       }
       if (message.starred) {
@@ -447,30 +439,8 @@ export default class Organizer {
     this.messageIndex = null;
     this.chatBlock.style = '';
 
-    // FIXME switch
-    switch (targetClass) {
-      case 'features__messages':
-        this.renderMessages(this.messages);
-        break;
-      case 'features__links':
-        this.renderMessages(this.links);
-        break;
-      case 'features__images':
-        this.renderMessages(this.images);
-        break;
-      case 'features__audios':
-        this.renderMessages(this.audios);
-        break;
-      case 'features__videos':
-        this.renderMessages(this.videos);
-        break;
-      case 'features__files':
-        this.renderMessages(this.files);
-        break;
-      case 'features__favourites':
-        this.renderMessages(this.favourites);
-        break;
-    }
+    const targetClassType = targetClass.replace('features__', '');
+    this.renderMessages(this[targetClassType]);
     this.chatBlock.scrollTop = this.chatBlock.scrollHeight;
 
     if (this.chatBlock.children.length === 0) {
@@ -483,6 +453,7 @@ export default class Organizer {
   }
 
   showFounded(messages) {
+    this.activeFeatures = 'search';
     do {
       this.chatBlock.children.forEach((message) => message.remove());
     } while (this.chatBlock.children.length !== 0);
@@ -548,32 +519,13 @@ export default class Organizer {
 
   callRenderMessages() {
     if (this.chatBlock.scrollTop === 0) {
-      let messages = [];
-      // FIXME switch
-      switch (this.activeFeatures) {
-        case 'features__messages':
-          messages = this.messages;
-          break;
-        case 'features__links':
-          messages = this.links;
-          break;
-        case 'features__images':
-          messages = this.images;
-          break;
-        case 'features__audios':
-          messages = this.audios;
-          break;
-        case 'features__videos':
-          messages = this.videos;
-          break;
-        case 'features__files':
-          messages = this.files;
-          break;
-        case 'features__favourites':
-          messages = this.favourites;
-          break;
+      if (this.activeFeatures === 'search') {
+        this.renderMessages(this.founded);
+      } else {
+        const featureType = this.activeFeatures.replace('features__', '');
+        const messages = this[featureType];
+        this.renderMessages(messages);
       }
-      this.renderMessages(messages);
     }
   }
 
